@@ -11,4 +11,6 @@ public interface BeerService  {
     List<Beer> beerList();
 
     Beer getBeerById(UUID id);
+
+    Beer saveNewBeer(Beer beer);
 }
