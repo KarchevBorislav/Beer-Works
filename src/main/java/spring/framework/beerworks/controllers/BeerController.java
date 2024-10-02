@@ -33,7 +33,7 @@ public class BeerController {
         return new ResponseEntity(headers,HttpStatus.CREATED);
     }
 
- 
+
     @RequestMapping(method = RequestMethod.GET)
     public List<Beer> beerList() {
         return beerService.beerList();

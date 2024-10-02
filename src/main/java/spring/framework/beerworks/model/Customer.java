@@ -10,7 +10,7 @@ import java.util.UUID;
 @Builder
 public class Customer {
 
-    private String customName;
+    private String customerName;
     private UUID id;
     private Integer version;
     private LocalDateTime createDate;

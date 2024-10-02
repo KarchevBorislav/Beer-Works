@@ -13,6 +13,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     private Map<UUID, Customer> customerMap;
 
+
     public CustomerServiceImpl() {
         customerMap = new HashMap<>();
 
@@ -20,14 +21,14 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer1 = Customer.builder()
                 .id(UUID.randomUUID())
                 .version(1)
-                .customName("John Doe")
+                .customerName("John Doe")
                 .createDate(LocalDateTime.now())
                 .updateDate(LocalDateTime.now())
                 .build();
         Customer customer2 = Customer.builder()
                 .id(UUID.randomUUID())
                 .version(1)
-                .customName("John Snow")
+                .customerName("John Snow")
                 .createDate(LocalDateTime.now())
                 .updateDate(LocalDateTime.now())
                 .build();
@@ -50,5 +51,19 @@ public class CustomerServiceImpl implements CustomerService {
         return new ArrayList<Customer>(customerMap.values());
     }
 
+    @Override
+    public Customer saveNewCustomer(Customer customer) {
+        Customer newCustomer = Customer.builder()
+                .customerName(customer.getCustomerName())
+                .id(UUID.randomUUID())
+                .version(customer.getVersion())
+                .createDate(LocalDateTime.now())
+                .updateDate(LocalDateTime.now())
+                .build();
 
+
+        customerMap.put(newCustomer.getId(), newCustomer);
+
+        return newCustomer;
+    }
 }
