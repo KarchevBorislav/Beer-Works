@@ -1,6 +1,7 @@
 package spring.framework.beerworks.services;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import spring.framework.beerworks.model.Customer;
 
 import java.time.LocalDateTime;
@@ -81,5 +82,26 @@ public class CustomerServiceImpl implements CustomerService {
     public void deleteById(UUID customerId) {
 
         customerMap.remove(customerId);
+    }
+
+    @Override
+    public void patchCustomerById(UUID customerId, Customer customer) {
+        Customer existing = customerMap.get(customerId);
+
+        if (StringUtils.hasText(existing.getCustomerName())) {
+            existing.setCustomerName(customer.getCustomerName());
+        }
+        if (existing.getId() != null){
+
+            existing.setId(customer.getId());
+        }
+        if (existing.getVersion() != null){
+            existing.setVersion(customer.getVersion());
+        }
+        
+
+
+
+
     }
 }
