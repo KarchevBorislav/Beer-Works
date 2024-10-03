@@ -23,6 +23,8 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
+    
+
 
     @DeleteMapping("{customerId}")
     public ResponseEntity deleteCustomerById(@PathVariable("customerId") UUID customerId){
@@ -70,6 +72,8 @@ public class CustomerController {
         return customerService.getCustomerById(customerId);
 
     }
+
+
 
 
 }
