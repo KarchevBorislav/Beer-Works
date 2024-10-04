@@ -3,6 +3,7 @@ package spring.framework.beerworks.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -13,9 +14,13 @@ import spring.framework.beerworks.model.Customer;
 import spring.framework.beerworks.services.CustomerService;
 import spring.framework.beerworks.services.CustomerServiceImpl;
 
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -105,6 +110,27 @@ class CustomerControllerTest {
                 .content(objectMapper.writeValueAsString(testCustomer)))
                 .andExpect(status().isNoContent());
 
+
+
+    }
+
+
+    @Test
+    void testDeleteCustomer() throws Exception {
+
+        Customer customer = customerServiceImpl.getCustomerList().get(0);
+
+        mockMvc.perform(delete("/api/v1/customer/" + customer.getId())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+
+
+
+        ArgumentCaptor<UUID> captor = ArgumentCaptor.forClass(UUID.class);
+        verify(customerService).deleteById(captor.capture());
+
+        assertThat(customer.getId()).isEqualTo(captor.getValue());
 
 
     }
