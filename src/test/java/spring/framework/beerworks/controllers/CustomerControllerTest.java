@@ -78,12 +78,12 @@ class CustomerControllerTest {
 
     @Test
     void testCreateCustomer() throws Exception {
-        Customer customer = customerServiceImpl.getCustomerList().get(1);
+        Customer customer = customerServiceImpl.getCustomerList().get(0);
 
         customer.setCustomerName(null);
         customer.setId(null);
 
-        given(customerService.saveNewCustomer(any(Customer.class))).willReturn(customerServiceImpl.getCustomerList().get(0));
+        given(customerService.saveNewCustomer(any(Customer.class))).willReturn(customerServiceImpl.getCustomerList().get(1));
 
 
         mockMvc.perform(post("/api/v1/customer")
