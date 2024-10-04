@@ -1,6 +1,7 @@
 package spring.framework.beerworks.controllers;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,14 +14,16 @@ import spring.framework.beerworks.model.Beer;
 import spring.framework.beerworks.services.BeerService;
 import spring.framework.beerworks.services.BeerServiceImpl;
 
+import java.util.UUID;
+
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 //@SpringBootTest
@@ -58,7 +61,6 @@ class BeerControllerTest {
 
     }
 
-
     @Test
     void getBeerById() throws Exception {
         Beer testBeer = beerServiceImpl.beerList().get(0);
@@ -93,6 +95,21 @@ class BeerControllerTest {
                 .andExpect(header().exists("Location"));
 
 
+    }
+
+    @Test
+    void testUpdateBeer() throws Exception {
+
+
+        Beer testBeer = beerServiceImpl.beerList().get(0);
+        mockMvc.perform(put("/api/v1/beer/" + testBeer.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(testBeer)))
+                .andExpect(status().isNoContent());
+
+
+        verify(beerService).updateBeerById(any(UUID.class),any(Beer.class));
     }
 
 }

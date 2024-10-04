@@ -16,8 +16,7 @@ import spring.framework.beerworks.services.CustomerServiceImpl;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -96,5 +95,18 @@ class CustomerControllerTest {
 
     }
 
+    @Test
+    void testUpdateCustomer() throws Exception {
+        Customer testCustomer = customerServiceImpl.getCustomerList().get(0);
+
+        mockMvc.perform(put("/api/v1/customer/" + testCustomer.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(testCustomer)))
+                .andExpect(status().isNoContent());
+
+
+
+    }
 }
 
