@@ -2,6 +2,7 @@ package spring.framework.beerworks.controllers;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 
-
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/customer")
 @RestController
