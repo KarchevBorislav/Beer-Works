@@ -11,8 +11,6 @@ import spring.framework.beerworks.model.Beer;
 import spring.framework.beerworks.services.BeerService;
 import spring.framework.beerworks.services.BeerServiceImpl;
 
-import java.util.UUID;
-
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
