@@ -1,6 +1,6 @@
 package spring.framework.beerworks.services;
 
-import spring.framework.beerworks.model.Customer;
+import spring.framework.beerworks.model.CustomerDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,15 +8,15 @@ import java.util.UUID;
 
 public interface CustomerService {
 
-    Optional<Customer> getCustomerById(UUID customerId);
+    Optional<CustomerDTO> getCustomerById(UUID customerId);
 
-    List<Customer> getCustomerList();
+    List<CustomerDTO> getCustomerList();
 
-    Customer saveNewCustomer(Customer customer);
+    CustomerDTO saveNewCustomer(CustomerDTO customerDTO);
 
-    void updateCustomerById(UUID customerId, Customer customer);
+    void updateCustomerById(UUID customerId, CustomerDTO customerDTO);
 
     void deleteById(UUID customerId);
 
-    void patchCustomerById(UUID customerId,Customer customer);
+    void patchCustomerById(UUID customerId, CustomerDTO customerDTO);
 }

@@ -2,7 +2,7 @@ package spring.framework.beerworks.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import spring.framework.beerworks.model.Customer;
+import spring.framework.beerworks.model.CustomerDTO;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -12,21 +12,21 @@ import java.util.*;
 public class CustomerServiceImpl implements CustomerService {
 
 
-    private Map<UUID, Customer> customerMap;
+    private Map<UUID, CustomerDTO> customerMap;
 
 
     public CustomerServiceImpl() {
         customerMap = new HashMap<>();
 
 
-        Customer customer1 = Customer.builder()
+        CustomerDTO customerDTO1 = CustomerDTO.builder()
                 .id(UUID.randomUUID())
                 .version(1)
                 .customerName("John Doe")
                 .createDate(LocalDateTime.now())
                 .updateDate(LocalDateTime.now())
                 .build();
-        Customer customer2 = Customer.builder()
+        CustomerDTO customerDTO2 = CustomerDTO.builder()
                 .id(UUID.randomUUID())
                 .version(1)
                 .customerName("John Snow")
@@ -34,13 +34,13 @@ public class CustomerServiceImpl implements CustomerService {
                 .updateDate(LocalDateTime.now())
                 .build();
 
-        customerMap.put(customer1.getId(), customer1);
-        customerMap.put(customer2.getId(), customer2);
+        customerMap.put(customerDTO1.getId(), customerDTO1);
+        customerMap.put(customerDTO2.getId(), customerDTO2);
     }
 
 
     @Override
-    public Optional<Customer> getCustomerById(UUID customerId) {
+    public Optional<CustomerDTO> getCustomerById(UUID customerId) {
 
 
         return Optional.of(customerMap.get(customerId));
@@ -48,31 +48,31 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     @Override
-    public List<Customer> getCustomerList(){
-        return new ArrayList<Customer>(customerMap.values());
+    public List<CustomerDTO> getCustomerList(){
+        return new ArrayList<CustomerDTO>(customerMap.values());
     }
 
     @Override
-    public Customer saveNewCustomer(Customer customer) {
-        Customer newCustomer = Customer.builder()
-                .customerName(customer.getCustomerName())
+    public CustomerDTO saveNewCustomer(CustomerDTO customerDTO) {
+        CustomerDTO newCustomerDTO = CustomerDTO.builder()
+                .customerName(customerDTO.getCustomerName())
                 .id(UUID.randomUUID())
-                .version(customer.getVersion())
+                .version(customerDTO.getVersion())
                 .createDate(LocalDateTime.now())
                 .updateDate(LocalDateTime.now())
                 .build();
 
 
-        customerMap.put(newCustomer.getId(), newCustomer);
+        customerMap.put(newCustomerDTO.getId(), newCustomerDTO);
 
-        return newCustomer;
+        return newCustomerDTO;
     }
 
     @Override
-    public void updateCustomerById(UUID customerId, Customer customer) {
+    public void updateCustomerById(UUID customerId, CustomerDTO customerDTO) {
 
-        Customer existing = customerMap.get(customerId);
-        existing.setCustomerName(customer.getCustomerName());
+        CustomerDTO existing = customerMap.get(customerId);
+        existing.setCustomerName(customerDTO.getCustomerName());
 
 
         customerMap.put(existing.getId(), existing);
@@ -85,18 +85,18 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void patchCustomerById(UUID customerId, Customer customer) {
-        Customer existing = customerMap.get(customerId);
+    public void patchCustomerById(UUID customerId, CustomerDTO customerDTO) {
+        CustomerDTO existing = customerMap.get(customerId);
 
         if (StringUtils.hasText(existing.getCustomerName())) {
-            existing.setCustomerName(customer.getCustomerName());
+            existing.setCustomerName(customerDTO.getCustomerName());
         }
         if (existing.getId() != null){
 
-            existing.setId(customer.getId());
+            existing.setId(customerDTO.getId());
         }
         if (existing.getVersion() != null){
-            existing.setVersion(customer.getVersion());
+            existing.setVersion(customerDTO.getVersion());
         }
 
 
