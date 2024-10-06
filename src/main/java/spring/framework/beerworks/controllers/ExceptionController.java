@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import spring.framework.beerworks.Exceptions.NotFoundException;
 
-@ControllerAdvice
+//@ControllerAdvice
 public class ExceptionController {
 
 
-    @ExceptionHandler(NotFoundException.class)
+   // @ExceptionHandler(NotFoundException.class)
     public ResponseEntity handleNotFoundException(){
         return ResponseEntity.notFound().build();
     }

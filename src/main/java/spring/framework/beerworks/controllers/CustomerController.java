@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import spring.framework.beerworks.Exceptions.NotFoundException;
 import spring.framework.beerworks.model.Beer;
 import spring.framework.beerworks.model.Customer;
 import spring.framework.beerworks.services.CustomerService;
@@ -81,7 +82,7 @@ public class CustomerController {
 
 
 
-        return customerService.getCustomerById(customerId);
+        return customerService.getCustomerById(customerId).orElseThrow(NotFoundException::new);
 
     }
 
