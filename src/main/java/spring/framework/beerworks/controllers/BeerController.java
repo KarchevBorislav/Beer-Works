@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import spring.framework.beerworks.Exceptions.NotFoundException;
 import spring.framework.beerworks.model.Beer;
 import spring.framework.beerworks.services.BeerService;
 
@@ -67,6 +68,9 @@ public class BeerController {
     public List<Beer> beerList() {
         return beerService.beerList();
     }
+
+
+
 
 
     @GetMapping(value = BEER_PATH_ID)

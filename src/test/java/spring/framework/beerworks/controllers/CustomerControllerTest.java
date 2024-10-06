@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import spring.framework.beerworks.Exceptions.NotFoundException;
 import spring.framework.beerworks.model.Beer;
 import spring.framework.beerworks.model.Customer;
 import spring.framework.beerworks.services.CustomerService;
@@ -159,5 +160,14 @@ class CustomerControllerTest {
         assertThat(customerMap.get("customerName")).isEqualTo(customerCaptor.getValue().getCustomerName());
 
     }
+
+
+    @Test
+    void getCustomerByIdNotFound() throws Exception {
+        given(customerService.getCustomerById(any(UUID.class))).willThrow(NotFoundException.class);
+        mockMvc.perform(get(CustomerController.CUSTOMER_PATH_ID, UUID.randomUUID()))
+                .andExpect(status().isNotFound());
+    }
 }
+
 
