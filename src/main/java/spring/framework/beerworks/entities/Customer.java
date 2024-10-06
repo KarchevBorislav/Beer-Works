@@ -21,7 +21,7 @@ public class Customer {
     private UUID id;
 
     private String customerName;
-    
+
     @Version
     private Integer version;
 
