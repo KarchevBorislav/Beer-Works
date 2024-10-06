@@ -24,13 +24,13 @@ public class BeerServiceJPA implements BeerService {
     public List<BeerDTO> beerList() {
 
 
-        return beerRepository.findAll().stream().map(beerMapper::beerToDto).collect(Collectors.toList());
+        return beerRepository.findAll().stream().map(beerMapper::beerToBeerDto).collect(Collectors.toList());
     }
 
     @Override
     public Optional<BeerDTO> getBeerById(UUID id) {
 
-        return Optional.ofNullable(beerMapper.beerToDto(beerRepository.findById(id).orElse(null)));
+        return Optional.ofNullable(beerMapper.beerToBeerDto(beerRepository.findById(id).orElse(null)));
     }
 
     @Override
