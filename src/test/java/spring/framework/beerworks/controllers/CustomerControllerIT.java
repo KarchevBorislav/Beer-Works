@@ -58,4 +58,18 @@ class CustomerControllerIT {
         assertThat(customerDTOS.size()).isEqualTo(0);
 
     }
+
+    @Test
+    void testGetCustomerById() {
+        Customer customer = customerRepository.findAll().get(0);
+
+        customerController.getCustomerById(customer.getId());
+        assertThat(customer).isNotNull();
+
+    }
+
+    @Test
+    void testGetCustomerByIdNotFound() {
+        assertThrows(NotFoundException.class, () -> customerController.getCustomerById(UUID.randomUUID()));
+    }
 }
