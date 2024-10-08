@@ -97,14 +97,13 @@ class BeerControllerIT {
         Beer beer = beerRepository.findAll().get(0);
 
 
-
         BeerDTO beerDTO = beerMapper.beerToBeerDto(beer);
         beerDTO.setId(null);
         beerDTO.setVersion(null);
         final String beerName = "Updated Beer";
         beerDTO.setBeerName(beerName);
 
-        ResponseEntity responseEntity = beerController.updateById(beer.getId(),beerDTO);
+        ResponseEntity responseEntity = beerController.updateById(beer.getId(), beerDTO);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(204));
 
@@ -121,8 +120,6 @@ class BeerControllerIT {
     }
 
 
-
-
     @Transactional
     @Rollback
     @Test
@@ -134,6 +131,14 @@ class BeerControllerIT {
 
         assertThat(beerRepository.findById(beer.getId())).isEmpty();
 
+
+    }
+
+    @Transactional
+    @Rollback
+    @Test
+    void testDeleteBeerByIdNotFound() {
+        assertThrows(NotFoundException.class, () -> beerController.deleteById(UUID.randomUUID()));
 
 
     }

@@ -100,40 +100,46 @@ public class BeerServiceImpl implements BeerService {
     @Override
     public Optional<BeerDTO> updateBeerById(UUID beerId, BeerDTO beerDTO) {
         BeerDTO existing = beerMap.get(beerId);
-      existing.setBeerName(beerDTO.getBeerName());
-      existing.setQuantityOnHand(beerDTO.getQuantityOnHand());
-      existing.setUpc(beerDTO.getUpc());
-      existing.setPrice(beerDTO.getPrice());
+        existing.setBeerName(beerDTO.getBeerName());
+        existing.setQuantityOnHand(beerDTO.getQuantityOnHand());
+        existing.setUpc(beerDTO.getUpc());
+        existing.setPrice(beerDTO.getPrice());
 
-      beerMap.put(existing.getId(), existing);
+        beerMap.put(existing.getId(), existing);
 
-      return Optional.of(existing);
+        return Optional.of(existing);
     }
 
     @Override
-    public void deleteById(UUID beerId) {
-        beerMap.remove(beerId);
+    public Boolean deleteById(UUID beerId) {
+
+        if (beerMap.containsKey(beerId)) {
+            beerMap.remove(beerId);
+            return true;
+        }
+
+        return false;
 
     }
 
     @Override
-    public void patchBeerById(UUID beerId, BeerDTO beerDTO)   {
+    public void patchBeerById(UUID beerId, BeerDTO beerDTO) {
         BeerDTO existing = beerMap.get(beerId);
 
-        if (StringUtils.hasText(beerDTO.getBeerName())){
+        if (StringUtils.hasText(beerDTO.getBeerName())) {
             existing.setBeerName(beerDTO.getBeerName());
         }
-        if (beerDTO.getBeerStyle() != null){
+        if (beerDTO.getBeerStyle() != null) {
             existing.setBeerStyle(beerDTO.getBeerStyle());
         }
-        if (beerDTO.getPrice() != null){
+        if (beerDTO.getPrice() != null) {
             existing.setPrice(beerDTO.getPrice());
         }
-        if (beerDTO.getQuantityOnHand() != null){
+        if (beerDTO.getQuantityOnHand() != null) {
             existing.setQuantityOnHand(beerDTO.getQuantityOnHand());
 
         }
-        if (StringUtils.hasText(beerDTO.getUpc())){
+        if (StringUtils.hasText(beerDTO.getUpc())) {
             existing.setUpc(beerDTO.getUpc());
         }
 
