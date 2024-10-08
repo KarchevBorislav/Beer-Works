@@ -3,6 +3,7 @@ package spring.framework.beerworks.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import spring.framework.beerworks.entities.Beer;
 import spring.framework.beerworks.mappers.BeerMapper;
 import spring.framework.beerworks.model.BeerDTO;
 import spring.framework.beerworks.repositories.BeerRepository;
@@ -62,11 +63,14 @@ public class BeerServiceJPA implements BeerService {
 
     @Override
     public void deleteById(UUID beerId) {
+        beerRepository.deleteById(beerId);
 
     }
 
     @Override
     public void patchBeerById(UUID beerId, BeerDTO beerDTO) {
+        Optional<Beer> byId = beerRepository.findById(beerId);
 
+        beerRepository.findById(byId.get().getId()).map(beerMapper::beerToBeerDto);
     }
 }
