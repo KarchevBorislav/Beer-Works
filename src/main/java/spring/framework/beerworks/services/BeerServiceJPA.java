@@ -3,7 +3,6 @@ package spring.framework.beerworks.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
-import spring.framework.beerworks.entities.Beer;
 import spring.framework.beerworks.mappers.BeerMapper;
 import spring.framework.beerworks.model.BeerDTO;
 import spring.framework.beerworks.repositories.BeerRepository;
@@ -11,6 +10,7 @@ import spring.framework.beerworks.repositories.BeerRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,15 +40,22 @@ public class BeerServiceJPA implements BeerService {
     }
 
     @Override
-    public void updateBeerById(UUID beerId, BeerDTO beerDTO) {
-        beerRepository.findById(beerId).ifPresent(foundedBeer ->
+    public Optional<BeerDTO> updateBeerById(UUID beerId, BeerDTO beerDTO) {
+
+        AtomicReference<Optional<BeerDTO>> optionalBeerDTO = new AtomicReference<>();
+        beerRepository.findById(beerId).ifPresentOrElse(foundedBeer ->
         {
             foundedBeer.setBeerName(beerDTO.getBeerName());
             foundedBeer.setBeerStyle(beerDTO.getBeerStyle());
             foundedBeer.setUpc(beerDTO.getUpc());
             foundedBeer.setPrice(beerDTO.getPrice());
             beerRepository.save(foundedBeer);
+            optionalBeerDTO.set(Optional.of(beerMapper.beerToBeerDto(beerRepository.save(foundedBeer))));
+        }, () -> {
+            optionalBeerDTO.set(Optional.empty());
         });
+
+        return optionalBeerDTO.get();
 
     }
 

@@ -12,13 +12,17 @@ import spring.framework.beerworks.entities.Beer;
 import spring.framework.beerworks.mappers.BeerMapper;
 import spring.framework.beerworks.model.BeerDTO;
 import spring.framework.beerworks.repositories.BeerRepository;
+import spring.framework.beerworks.services.BeerService;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
 class BeerControllerIT {
@@ -26,6 +30,9 @@ class BeerControllerIT {
     BeerController beerController;
     @Autowired
     BeerRepository beerRepository;
+
+    @Autowired
+    BeerService beerService;
 
     @Autowired
     BeerMapper beerMapper;
@@ -83,9 +90,13 @@ class BeerControllerIT {
     }
 
 
+    @Transactional
+    @Rollback
     @Test
     void testUpdateExistingBeer() {
         Beer beer = beerRepository.findAll().get(0);
+
+
 
         BeerDTO beerDTO = beerMapper.beerToBeerDto(beer);
         beerDTO.setId(null);
@@ -103,4 +114,9 @@ class BeerControllerIT {
 
     }
 
+    @Test
+    void testUpdateNotFound() {
+
+        assertThrows(NotFoundException.class, () -> beerController.updateById(UUID.randomUUID(), BeerDTO.builder().build()));
+    }
 }
