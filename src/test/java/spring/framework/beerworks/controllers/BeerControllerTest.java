@@ -141,7 +141,7 @@ class BeerControllerTest {
                 .andExpect(jsonPath("$.length()",is(1)));
 
 
-      
+
     }
 
     @Test
