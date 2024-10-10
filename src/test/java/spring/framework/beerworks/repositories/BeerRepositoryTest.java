@@ -38,7 +38,7 @@ class BeerRepositoryTest {
     }    @Test
     void testSaveBeerNameToLong() {
         assertThrows(ConstraintViolationException.class,()->{
-            Beer savedBeer = beerRepository.save(Beer.builder().beerName("MyBearNameJustToLong")
+            Beer savedBeer = beerRepository.save(Beer.builder().beerName("MyBearNameJustToLongasasasafdffdfddsdasdsadasczcxzczcxzcxzcxzcdsadasfdfdfdfd")
                     .beerStyle(BeerStyle.STOUT)
                     .upc("1211")
                     .price(new BigDecimal("1.1"))

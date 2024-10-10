@@ -30,14 +30,16 @@ public class Beer {
 
     @NotNull
     @NotBlank
-    @Column(length = 15,nullable = false)
-    @Size(min = 2, max = 15)
+    @Size(max = 50)
+    @Column(length = 50)
     private String beerName;
+
     @NotNull
     private BeerStyle beerStyle;
 
     @NotNull
     @NotBlank
+    @Size(max = 50)
     private String upc;
     private Integer quantityOnHand;
     @NotNull

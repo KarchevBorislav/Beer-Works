@@ -1,6 +1,7 @@
 package spring.framework.beerworks.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,6 +28,11 @@ public class CustomErrorHandler {
                 }).toList();
 
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler
+    ResponseEntity handleJPAViolations(TransactionSystemException exception ){
+    return ResponseEntity.badRequest().build();
     }
 
 }
