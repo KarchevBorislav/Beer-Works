@@ -3,8 +3,8 @@ package spring.framework.beerworks.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 import spring.framework.beerworks.model.BeerStyle;
 
 import java.math.BigDecimal;
@@ -28,13 +28,15 @@ public class Beer {
     @Version
     private Integer version;
 
-    @NonNull
+    @NotNull
     @NotBlank
+    @Column(length = 15,nullable = false)
+    @Size(min = 2, max = 15)
     private String beerName;
-    @NonNull
+    @NotNull
     private BeerStyle beerStyle;
 
-    @NonNull
+    @NotNull
     @NotBlank
     private String upc;
     private Integer quantityOnHand;
