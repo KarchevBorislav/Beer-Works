@@ -20,18 +20,22 @@ class BeerRepositoryTest {
     BeerRepository beerRepository;
 
     @Test
-    void testSaveBeer(){
+    void testSaveBeer() {
 
-        Beer savedBeer = beerRepository.save(Beer.builder().beerName("MyBear").build());
+        Beer savedBeer = beerRepository.save(Beer.builder().beerName("MyBear")
+                .beerStyle(BeerStyle.STOUT)
+                .upc("1211")
+                .price(new BigDecimal("1.1"))
+                .build());
 
         long size = beerRepository.count();
 
 
+        beerRepository.flush();
         assertThat(savedBeer).isNotNull();
         assertThat(savedBeer.getId()).isNotNull();
         assertEquals(1, size);
     }
-
 
 
 }
