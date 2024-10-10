@@ -1,5 +1,6 @@
 package spring.framework.beerworks.controllers;
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,14 +17,13 @@ import java.util.stream.Collectors;
 public class CustomErrorHandler {
 
 
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    ResponseEntity handleBindErrors(MethodArgumentNotValidException ex){
+    ResponseEntity handleBindErrors(MethodArgumentNotValidException ex) {
 
         List errors = ex.getFieldErrors().stream()
                 .map(fieldError -> {
                     Map<String, String> errorMap = new HashMap<>();
-                    errorMap.put( fieldError.getField(),fieldError.getDefaultMessage());
+                    errorMap.put(fieldError.getField(), fieldError.getDefaultMessage());
                     return errorMap;
                 }).toList();
 
@@ -31,8 +31,25 @@ public class CustomErrorHandler {
     }
 
     @ExceptionHandler
-    ResponseEntity handleJPAViolations(TransactionSystemException exception ){
-    return ResponseEntity.badRequest().build();
+    ResponseEntity handleJPAViolations(TransactionSystemException exception) {
+
+        ResponseEntity.BodyBuilder responseEntity = ResponseEntity.badRequest();
+
+        if (exception.getCause().getCause() instanceof ConstraintViolationException) {
+
+            ConstraintViolationException ve = (ConstraintViolationException) exception.getCause().getCause();
+
+            List errors = ve.getConstraintViolations().stream()
+                    .map(constraintViolation -> {
+                        Map<String, String> errMap = new HashMap<>();
+                        errMap.put(constraintViolation.getPropertyPath().toString(), constraintViolation.getMessage());
+                        return errMap;
+
+                    }).toList();
+            return responseEntity.body(errors);
+        }
+
+        return responseEntity.build();
     }
 
 }
