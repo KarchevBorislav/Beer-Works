@@ -1,6 +1,7 @@
 package spring.framework.beerworks.services;
 
 import com.opencsv.bean.CsvToBeanBuilder;
+import org.springframework.stereotype.Service;
 import spring.framework.beerworks.model.BeerCSVRecord;
 
 import java.io.File;
@@ -9,6 +10,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class BeerCsvServiceImpl implements BeerCsvService {
     @Override
     public List<BeerCSVRecord> convertCSV(File scvFile) {

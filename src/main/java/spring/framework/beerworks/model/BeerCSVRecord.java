@@ -43,7 +43,7 @@ public class BeerCSVRecord {
     private Integer breweryId;
 
     @CsvBindByName
-    private Float milliliter;
+    private Float ounces;
 
     @CsvBindByName
     private String style2;
