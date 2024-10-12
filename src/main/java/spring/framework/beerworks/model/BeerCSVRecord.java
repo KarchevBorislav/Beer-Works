@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class beerCSVRecord {
+public class BeerCSVRecord {
 
 
 
