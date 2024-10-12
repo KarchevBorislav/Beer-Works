@@ -35,9 +35,9 @@ public class BootstrapData implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        loadCsvData();
-        loadBeerData();
 
+        loadBeerData();
+        loadCsvData();
         loadCustomerData();
     }
 
