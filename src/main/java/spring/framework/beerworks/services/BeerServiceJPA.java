@@ -7,14 +7,13 @@ import org.springframework.util.StringUtils;
 import spring.framework.beerworks.entities.Beer;
 import spring.framework.beerworks.mappers.BeerMapper;
 import spring.framework.beerworks.model.BeerDTO;
+import spring.framework.beerworks.model.BeerStyle;
 import spring.framework.beerworks.repositories.BeerRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 @Service
 @Primary
@@ -24,16 +23,18 @@ public class BeerServiceJPA implements BeerService {
     private final BeerMapper beerMapper;
 
     @Override
-    public List<BeerDTO> beerList(String beerName) {
+    public List<BeerDTO> beerList(String beerName, BeerStyle beerStyle) {
 
         List<Beer> beerList;
 
-        if (StringUtils.hasText(beerName)) {
+        if (StringUtils.hasText(beerName) && beerStyle == null) {
             beerList = listBeerByName(beerName);
-
+        } else if (!StringUtils.hasText(beerName) && beerStyle != null) {
+            beerList = listBeerByStyle(beerStyle);
         } else {
             beerList = beerRepository.findAll();
         }
+
 
         return beerList.stream()
                 .map(beerMapper::beerToBeerDto).toList();
@@ -119,6 +120,13 @@ public class BeerServiceJPA implements BeerService {
     public List<Beer> listBeerByName(String beerName) {
 
 
-        return beerRepository.findAllByBeerNameIsLikeIgnoreCase("%" + beerName + "%") ;
+        return beerRepository.findAllByBeerNameIsLikeIgnoreCase("%" + beerName + "%");
     }
+
+    public List<Beer> listBeerByStyle(BeerStyle beerStyle) {
+
+        return beerRepository.findAllByBeerStyle(beerStyle);
+    }
+
+
 }

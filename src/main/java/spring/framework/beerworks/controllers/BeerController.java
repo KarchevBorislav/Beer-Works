@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import spring.framework.beerworks.Exceptions.NotFoundException;
 import spring.framework.beerworks.model.BeerDTO;
+import spring.framework.beerworks.model.BeerStyle;
 import spring.framework.beerworks.services.BeerService;
 
 import java.util.List;
@@ -72,9 +73,9 @@ public class BeerController {
 
 
     @GetMapping(value = BEER_PATH)
-    public List<BeerDTO> beerList(@RequestParam(required = false) String beerName) {
+    public List<BeerDTO> beerList(@RequestParam(required = false) String beerName, @RequestParam(required = false) BeerStyle beerStyle) {
 
-        return beerService.beerList(beerName);
+        return beerService.beerList(beerName,beerStyle);
     }
 
 

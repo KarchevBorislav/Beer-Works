@@ -19,6 +19,7 @@ import spring.framework.beerworks.Exceptions.NotFoundException;
 import spring.framework.beerworks.entities.Beer;
 import spring.framework.beerworks.mappers.BeerMapper;
 import spring.framework.beerworks.model.BeerDTO;
+import spring.framework.beerworks.model.BeerStyle;
 import spring.framework.beerworks.repositories.BeerRepository;
 import static org.hamcrest.core.Is.is;
 
@@ -63,7 +64,7 @@ class BeerControllerIT {
 
     @Test
     void testListBeers() {
-        List<BeerDTO> beerDTOS = beerController.beerList(null);
+        List<BeerDTO> beerDTOS = beerController.beerList(null,null);
 
 
         assertThat(beerDTOS.size()).isEqualTo(2413);
@@ -74,7 +75,7 @@ class BeerControllerIT {
     @Test
     void testEmptyList() {
         beerRepository.deleteAll();
-        List<BeerDTO> beerDTOS = beerController.beerList(null);
+        List<BeerDTO> beerDTOS = beerController.beerList(null,null);
 
         assertThat(beerDTOS.size()).isEqualTo(0);
     }
@@ -191,5 +192,13 @@ class BeerControllerIT {
                 .queryParam("beerName","IPA"))
                 .andExpect( status().isOk())
                 .andExpect(jsonPath("$.size()",is(336)));
+    }
+
+    @Test
+    void testListBeerByStyle() throws Exception {
+        mockMvc.perform(get(BeerController.BEER_PATH )
+                .queryParam("beerStyle", BeerStyle.IPA.name()))
+                .andExpect( status().isOk())
+                .andExpect(jsonPath("$.size()",is(547)));
     }
 }
