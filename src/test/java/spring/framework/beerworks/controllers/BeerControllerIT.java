@@ -22,7 +22,7 @@ import spring.framework.beerworks.model.BeerDTO;
 import spring.framework.beerworks.repositories.BeerRepository;
 import static org.hamcrest.core.Is.is;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 
 @SpringBootTest
@@ -62,7 +63,7 @@ class BeerControllerIT {
 
     @Test
     void testListBeers() {
-        List<BeerDTO> beerDTOS = beerController.beerList();
+        List<BeerDTO> beerDTOS = beerController.beerList(null);
 
 
         assertThat(beerDTOS.size()).isEqualTo(2413);
@@ -73,7 +74,7 @@ class BeerControllerIT {
     @Test
     void testEmptyList() {
         beerRepository.deleteAll();
-        List<BeerDTO> beerDTOS = beerController.beerList();
+        List<BeerDTO> beerDTOS = beerController.beerList(null);
 
         assertThat(beerDTOS.size()).isEqualTo(0);
     }
@@ -184,5 +185,11 @@ class BeerControllerIT {
 
     }
 
-
+    @Test
+    void testListBeerByName() throws Exception {
+        mockMvc.perform(get(BeerController.BEER_PATH )
+                .queryParam("beerName","IPA"))
+                .andExpect( status().isOk())
+                .andExpect(jsonPath("$.size()",is(100)));
+    }
 }
