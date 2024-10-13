@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import spring.framework.beerworks.entities.Beer;
 import spring.framework.beerworks.mappers.BeerMapper;
 import spring.framework.beerworks.model.BeerDTO;
 import spring.framework.beerworks.repositories.BeerRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,9 +26,19 @@ public class BeerServiceJPA implements BeerService {
     @Override
     public List<BeerDTO> beerList(String beerName) {
 
-        return beerRepository.findAll().stream()
-                .map(beerMapper::beerToBeerDto).collect(Collectors.toList());
+        List<Beer> beerList;
+
+        if (StringUtils.hasText(beerName)) {
+            beerList = listBeerByName(beerName);
+
+        } else {
+            beerList = beerRepository.findAll();
+        }
+
+        return beerList.stream()
+                .map(beerMapper::beerToBeerDto).toList();
     }
+
 
     @Override
     public Optional<BeerDTO> getBeerById(UUID id) {
@@ -69,7 +81,7 @@ public class BeerServiceJPA implements BeerService {
             beerRepository.deleteById(beerId);
             return true;
         }
-       return false;
+        return false;
 
 
     }
@@ -79,19 +91,19 @@ public class BeerServiceJPA implements BeerService {
         AtomicReference<Optional<BeerDTO>> atomicReference = new AtomicReference<>();
 
         beerRepository.findById(beerId).ifPresentOrElse(foundBeer -> {
-            if (StringUtils.hasText(beerDTO.getBeerName())){
+            if (StringUtils.hasText(beerDTO.getBeerName())) {
                 foundBeer.setBeerName(beerDTO.getBeerName());
             }
-            if (beerDTO.getBeerStyle() != null){
+            if (beerDTO.getBeerStyle() != null) {
                 foundBeer.setBeerStyle(beerDTO.getBeerStyle());
             }
-            if (StringUtils.hasText(beerDTO.getUpc())){
+            if (StringUtils.hasText(beerDTO.getUpc())) {
                 foundBeer.setUpc(beerDTO.getUpc());
             }
-            if (beerDTO.getPrice() != null){
+            if (beerDTO.getPrice() != null) {
                 foundBeer.setPrice(beerDTO.getPrice());
             }
-            if (beerDTO.getQuantityOnHand() != null){
+            if (beerDTO.getQuantityOnHand() != null) {
                 foundBeer.setQuantityOnHand(beerDTO.getQuantityOnHand());
             }
             atomicReference.set(Optional.of(beerMapper
@@ -101,5 +113,12 @@ public class BeerServiceJPA implements BeerService {
         });
 
         return atomicReference.get();
+    }
+
+
+    public List<Beer> listBeerByName(String beerName) {
+
+
+        return beerRepository.findAllByBeerNameIsLikeIgnoreCase("%" + beerName + "%") ;
     }
 }

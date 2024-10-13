@@ -4,15 +4,21 @@ import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
+import spring.framework.beerworks.bootstrap.BootstrapData;
 import spring.framework.beerworks.entities.Beer;
 import spring.framework.beerworks.model.BeerStyle;
+import spring.framework.beerworks.services.BeerCsvService;
+import spring.framework.beerworks.services.BeerCsvServiceImpl;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
+@Import({BootstrapData.class, BeerCsvServiceImpl.class})
 class BeerRepositoryTest {
 
 
@@ -34,8 +40,10 @@ class BeerRepositoryTest {
         beerRepository.flush();
         assertThat(savedBeer).isNotNull();
         assertThat(savedBeer.getId()).isNotNull();
-        assertEquals(1, size);
-    }    @Test
+        assertEquals(2414, size);
+    }
+
+    @Test
     void testSaveBeerNameToLong() {
         assertThrows(ConstraintViolationException.class,()->{
             Beer savedBeer = beerRepository.save(Beer.builder().beerName("MyBearNameJustToLongasasasafdffdfddsdasdsadasczcxzczcxzcxzcxzcdsadasfdfdfdfd")
@@ -47,11 +55,13 @@ class BeerRepositoryTest {
 
         });
 
-
-
-
-
     }
 
 
+    @Test
+    void testGetBeerListByNameIgnoreCase() {
+        List<Beer> beerList = beerRepository.findAllByBeerNameIsLikeIgnoreCase("%IPA%");
+    assertThat(beerList.size()).isEqualTo(336);
+
+    }
 }
