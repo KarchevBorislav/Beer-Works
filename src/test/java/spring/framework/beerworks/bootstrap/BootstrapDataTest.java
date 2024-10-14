@@ -28,18 +28,19 @@ class BootstrapDataTest {
     BeerCsvService beerCsvService;
 
 
+
     BootstrapData bootstrapData;
 
 
     @BeforeEach
     void setUp() {
-        bootstrapData = new BootstrapData(beerRepository,customerRepository,beerCsvService);
+        bootstrapData = new BootstrapData(beerRepository, customerRepository, beerCsvService);
     }
 
     @Test
     void testRun() throws Exception {
+        bootstrapData.run(null);
 
-        bootstrapData.run(  null);
 
         assertThat(beerRepository.count()).isEqualTo(2413);
         assertThat(customerRepository.count()).isEqualTo(2);

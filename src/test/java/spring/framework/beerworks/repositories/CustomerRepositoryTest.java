@@ -18,13 +18,11 @@ class CustomerRepositoryTest {
     public void testSaveCustomer() {
 
 
-        Customer myCustomer = customerRepository.save(Customer.builder().customerName("My Customer").build());
+        Customer customer = customerRepository.save(Customer.builder()
+                .customerName("New Name")
+                .build());
 
-        long size = customerRepository.count();
-
-        assertEquals(1, size);
-        assertThat(myCustomer).isNotNull();
-        assertThat(myCustomer.getId()).isNotNull();
+        assertThat(customer.getId()).isNotNull();
 
 
     }

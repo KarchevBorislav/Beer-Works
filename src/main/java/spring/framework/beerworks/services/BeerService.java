@@ -1,15 +1,15 @@
 package spring.framework.beerworks.services;
 
+import org.springframework.data.domain.Page;
 import spring.framework.beerworks.model.BeerDTO;
 import spring.framework.beerworks.model.BeerStyle;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface BeerService  {
 
-    List<BeerDTO> beerList(String beerName, BeerStyle beerStyle, Boolean showInventory, Integer pageNumber, Integer pageSize);
+    Page<BeerDTO> beerList(String beerName, BeerStyle beerStyle, Boolean showInventory, Integer pageNumber, Integer pageSize);
 
    Optional<BeerDTO>  getBeerById(UUID id);
 

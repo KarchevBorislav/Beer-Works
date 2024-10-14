@@ -1,6 +1,8 @@
 package spring.framework.beerworks.services;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import spring.framework.beerworks.model.BeerDTO;
@@ -65,8 +67,8 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public List<BeerDTO> beerList(String beerName, BeerStyle beerStyle, Boolean showInventory, Integer pageNumber, Integer pageSize) {
-        return new ArrayList<BeerDTO>(beerMap.values());
+    public Page<BeerDTO> beerList(String beerName, BeerStyle beerStyle, Boolean showInventory, Integer pageNumber, Integer pageSize) {
+        return new PageImpl(new ArrayList<BeerDTO>(beerMap.values()));
     }
 
 
