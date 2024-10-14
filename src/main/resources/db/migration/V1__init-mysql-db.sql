@@ -22,6 +22,5 @@ create table customer (
                           update_date datetime(6),
                           id varchar(36) not null,
                           customer_name varchar(255),
-                          email varchar(255),
                           primary key (id)
 ) engine=InnoDB;
