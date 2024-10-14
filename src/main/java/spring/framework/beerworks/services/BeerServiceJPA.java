@@ -165,7 +165,7 @@ public class BeerServiceJPA implements BeerService {
                 queryPageSize = 900;
             } else {
                 queryPageSize = pageSize;
-                
+
             }
 
 
