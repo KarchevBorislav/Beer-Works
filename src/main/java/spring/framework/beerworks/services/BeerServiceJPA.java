@@ -2,6 +2,7 @@ package spring.framework.beerworks.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import spring.framework.beerworks.entities.Beer;
@@ -22,8 +23,14 @@ public class BeerServiceJPA implements BeerService {
     private final BeerRepository beerRepository;
     private final BeerMapper beerMapper;
 
+    private final static int DEFAULT_PAGE = 0;
+    private final static int DEFAULT_PAGE_SIZE = 25;
+
+
     @Override
     public List<BeerDTO> beerList(String beerName, BeerStyle beerStyle, Boolean showInventory, Integer pageNumber, Integer pageSize) {
+
+        PageRequest pageRequest = buildPageRequest(pageNumber, pageSize);
 
         List<Beer> beerList;
 
@@ -31,21 +38,22 @@ public class BeerServiceJPA implements BeerService {
             beerList = listBeerByName(beerName);
         } else if (!StringUtils.hasText(beerName) && beerStyle != null) {
             beerList = listBeerByStyle(beerStyle);
-        } else if (StringUtils.hasText(beerName) && beerStyle != null){
-            beerList = listBeerByNameAndStyle(beerName,beerStyle);
+        } else if (StringUtils.hasText(beerName) && beerStyle != null) {
+            beerList = listBeerByNameAndStyle(beerName, beerStyle);
 
-        }else {
+        } else {
             beerList = beerRepository.findAll();
         }
 
-        if (showInventory!=null && !showInventory) {
-            beerList.forEach(beer -> {beer.setQuantityOnHand(null);});
+        if (showInventory != null && !showInventory) {
+            beerList.forEach(beer -> {
+                beer.setQuantityOnHand(null);
+            });
         }
 
         return beerList.stream()
                 .map(beerMapper::beerToBeerDto).toList();
     }
-
 
 
     @Override
@@ -124,10 +132,10 @@ public class BeerServiceJPA implements BeerService {
     }
 
 
-    private List<Beer> listBeerByNameAndStyle(String beerName,BeerStyle beerStyle) {
+    private List<Beer> listBeerByNameAndStyle(String beerName, BeerStyle beerStyle) {
 
 
-        return beerRepository.findAllByBeerNameIsLikeIgnoreCaseAndBeerStyle("%" + beerName + "%",beerStyle);
+        return beerRepository.findAllByBeerNameIsLikeIgnoreCaseAndBeerStyle("%" + beerName + "%", beerStyle);
     }
 
     private List<Beer> listBeerByStyle(BeerStyle beerStyle) {
@@ -139,6 +147,33 @@ public class BeerServiceJPA implements BeerService {
         return beerRepository.findAllByBeerNameIsLikeIgnoreCase("%" + beerName + "%");
     }
 
+    private PageRequest buildPageRequest(Integer pageNumber, Integer pageSize) {
+        int queryPageNumber;
+        int queryPageSize;
+
+        if (pageNumber != null && pageNumber > 0) {
+            queryPageNumber = pageNumber - 1;
+
+        } else {
+            queryPageNumber = DEFAULT_PAGE;
+        }
+
+        if (pageSize == null) {
+            queryPageSize = DEFAULT_PAGE_SIZE;
+        } else {
+            if (pageSize > 900) {
+                queryPageSize = 900;
+            } else {
+                queryPageSize = pageSize;
+                
+            }
+
+
+        }
+
+        return PageRequest.of(queryPageNumber, queryPageSize);
+
+    }
 
 
 }
