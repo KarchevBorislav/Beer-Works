@@ -61,6 +61,6 @@ public class Beer {
     @UpdateTimestamp
     private LocalDateTime updateDate;
 
-    @OneToMany(mappedBy = "beerId")
+    @OneToMany(mappedBy = "beer")
     private Set<BeerOrderLine> beerOrderLines;
 }

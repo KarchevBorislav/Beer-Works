@@ -47,7 +47,7 @@ public class BeerOrderLine {
     private BeerOrder beerOrder;
 
     @ManyToOne
-    private Beer beerId;
+    private Beer beer;
 
     public boolean isNew() {
         return this.id == null;
