@@ -57,10 +57,14 @@ public class Beer {
     @CreationTimestamp
     private LocalDateTime createDate;
 
-
     @UpdateTimestamp
     private LocalDateTime updateDate;
 
     @OneToMany(mappedBy = "beer")
     private Set<BeerOrderLine> beerOrderLines;
+
+    @ManyToMany
+    @JoinTable(name = "beer_category",joinColumns = @JoinColumn(name = "beer_id"),
+    inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories;
 }
