@@ -3,12 +3,11 @@ package spring.framework.beerworks.repositories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import spring.framework.beerworks.entities.Beer;
+import spring.framework.beerworks.entities.BeerOrder;
 import spring.framework.beerworks.entities.Customer;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
@@ -36,13 +35,14 @@ class BeerOrderRepositoryTest {
 
     }
 
+    @Transactional
     @Test
     void testBeerOrders() {
-        System.out.println(beerOrderRepository.count());
-        System.out.println(customerRepository.count());
-        System.out.println(beerRepository.count());
-        System.out.println(testCustomer.getCustomerName());
-        System.out.println(testBeer.getBeerName());
+        BeerOrder testBeerOrder = BeerOrder.builder().customerRef("Test")
+                .customer(testCustomer)
+                .build();
+
+        BeerOrder save = beerOrderRepository.save(testBeerOrder);
 
     }
 }

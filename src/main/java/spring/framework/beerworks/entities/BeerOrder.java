@@ -14,7 +14,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+
 @Builder
 @Entity
 public class BeerOrder {
@@ -43,8 +43,24 @@ public class BeerOrder {
     @ManyToOne
     private Customer customer;
 
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+
+
+        //Set has to be Initialized, if not it will not work!!
+        customer.getBeerOrders().add(this);
+    }
 
     @OneToMany(mappedBy = "beerOrder")
     private Set<BeerOrderLine> beerOrderLines;
 
+
+    public BeerOrder(UUID id, Integer version, Timestamp createDate, String customerRef, Customer customer, Set<BeerOrderLine> beerOrderLines) {
+        this.id = id;
+        this.version = version;
+        this.createDate = createDate;
+        this.customerRef = customerRef;
+        this.setCustomer(customer);
+        this.beerOrderLines = beerOrderLines;
+    }
 }
