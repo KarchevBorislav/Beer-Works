@@ -14,6 +14,7 @@ import spring.framework.beerworks.model.BeerStyle;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -27,7 +28,7 @@ import java.util.UUID;
 public class Beer {
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+
     @JdbcTypeCode(SqlTypes.CHAR)
     @Column(length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false)
     private UUID id;
@@ -59,4 +60,7 @@ public class Beer {
 
     @UpdateTimestamp
     private LocalDateTime updateDate;
+
+    @OneToMany(mappedBy = "beerId")
+    private Set<BeerOrderLine> beerOrderLines;
 }
